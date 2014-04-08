@@ -11,6 +11,8 @@
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
 		<Item Name="Tools" Type="Folder">
+			<Item Name="Div-Cur.vi" Type="VI" URL="../Div-Cur.vi"/>
+			<Item Name="Div-Volt.vi" Type="VI" URL="../Div-Volt.vi"/>
 			<Item Name="RpR.vi" Type="VI" URL="../RpR.vi"/>
 		</Item>
 		<Item Name="Dependencies" Type="Dependencies"/>
