@@ -42,7 +42,8 @@
     (dotimes (an a i)
       (setq i (+ i (expt n an))))))
 
-;;; (expsum 65 5) => 18129541
+;;; (expsum 65 5)
+;;  => 18129541
 
 ;; (/ 18129541 60.0)
 ;; with 18129541 a measure of miliseconds
@@ -50,9 +51,9 @@
 ;; = 0.20983265046 day
 ;; shortly more than 5 hours
 ;; ^ the maximum time to calcluate the set of resistors Re for an
-;; equivalent resistance Rt given Sr of length n, maximum  number of
+;; equivalent resistance Rt given Sr of length n, maximum number of
 ;; resistors in circuit 'a' ... assuming that any useful subset of Sr
-;; can be arbitrary computed for an equivalent Rt
+;; can be arbitrary computed for a matheatically equivalent Rt
 
 
 ;; assorted top-level forms

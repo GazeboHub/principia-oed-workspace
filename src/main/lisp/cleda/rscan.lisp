@@ -18,6 +18,9 @@ The Eclipse Public License 1.0 is available at the URL:
 
 |#
 
+
+(in-package #:cleda)
+
 (defstruct (r
             (:constructor %make-r
                 (rating tolerance rating-min rating-max)))

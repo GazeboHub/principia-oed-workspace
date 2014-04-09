@@ -30,6 +30,9 @@ The Eclipse Public License 1.0 is available at the URL:
 |#
 
 
+(in-package #:cleda)
+
+
 (defun opt-r (r)
   "For R of type RATING, if R can be represented as a FIXNUM value,
 return the truncation of R, else return R"
