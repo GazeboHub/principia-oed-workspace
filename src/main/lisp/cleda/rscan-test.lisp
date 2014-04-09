@@ -56,18 +56,35 @@
 ;; can be arbitrary computed for a matheatically equivalent Rt
 
 
-;; assorted top-level forms
+;; Usage tests
 
-(map 'list #'(lambda (bucket)
-               (cons (r-rating (svref bucket 0))
-                     (r-rating (svref bucket 1))))
-     (search-par-r-2 20 *rset*))
+(defun rset-search (r-equiv &optional (result-type 'list))
+  (declare (type rating r-equiv)
+           (values sequence &optional))
+  (map result-type
+       #'(lambda (bucket)
+           (cons (r-rating (svref bucket 0))
+                 (r-rating (svref bucket 1))))
+       (search-par-r-2 r-equiv *rset*)))
+
+;; Usage test 1. Calculate a set of resistances for specific integer
+;; values, each a power of 10
+
+(rset-search 10)
+;; => NIL
+
+(rset-search 20)
 ;;  => #((220 . 22) (22 . 220))
-;; ^ one of the few examples for which this trivial two-resistor
-;; search would appear to be of any use
-;;
-;; Note that it returns to "equivalent sets" however
 
-(map 'list #'identity
-     (search-par-r-2 0.005952 *rset*))
+;; FIXME: Note that SEARCH-PAR-R-2 returns two "equivalent sets"
+
+(rset-search 30)
+;;  => #((330 . 33) (33 . 330))
+
+(rset-search 40)
+;; => NIL
+
+;; Usage test 2. ... specific single-float value
+
+(rset-search 0.005952)
 ;; => NIL
