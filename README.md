@@ -73,4 +73,9 @@ efficient, in its iterative two-resistor model, however it could make
 for a useful exercise in program design and circuit modeling.
 
 
+#### gUtils - Version History
+
+* 1.0.1 : created `RpR.vi` and containing `EELaw.lvproj` project
+* 1.0.2 : added `Div-Cur.vi` and `Div-Volt.vi` both in reusing `RpR.vi`
+
 [labview]: http://www.ni.com/labview/
