@@ -13,7 +13,7 @@ Availability: <https://github.com/GazeboHub/principia-oed-workspace>
 
 ### gUtils
 
-Pathname: `src/main/labview-g/g-utils`
+Pathname: `src/main/labview-g/g-utils/`
 Latest version: 1.0.2
 
 #### gUtils - Overview
@@ -69,7 +69,7 @@ process.
 There may be a more efficient approach than that, available for
 applications in circuit voltage, current, and resistance
 analysis. Though the _binary FSM_ methodology might not seem optimally
-efficient, in its iterative two-resistor model, however it could make
+efficient, in its iterative two-resistor model, however it could makea
 for a useful exercise in program design and circuit modeling.
 
 
@@ -77,5 +77,18 @@ for a useful exercise in program design and circuit modeling.
 
 * 1.0.1 : created `RpR.vi` and containing `EELaw.lvproj` project
 * 1.0.2 : added `Div-Cur.vi` and `Div-Volt.vi` both in reusing `RpR.vi`
+
+
+### CLEDA - Common Lisp EDA Tools
+
+Pathname: `src/main/lisp/cleda/`
+Latest version: 1.0.1
+
+#### CLEDA - Version History
+
+* 1.0.1 added par-r, i-ab, v-ab, rating type, r struct, opt-r, make-r,
+  make-rset, search-par-r
+
+
 
 [labview]: http://www.ni.com/labview/
