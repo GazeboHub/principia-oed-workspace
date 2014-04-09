@@ -1,4 +1,4 @@
-;; cleda.lisp -- Common Lisp EDA tools 1.0.1
+;; cleda.lisp -- Common Lisp EDA tools 1.0.2
 
 #|
 
@@ -29,13 +29,51 @@ The Eclipse Public License 1.0 is available at the URL:
 
 |#
 
+(deftype rating ()
+  "Resistor rating value type"
+  '(or single-float fixnum))
+
+(defun opt-r (r)
+  "For R of type RATING, if R can be represented as a FIXNUM value,
+return the truncation of R, else return R"
+  (declare (type real r)
+           (values rating &optional))
+  (let ((r-trunc (truncate r)))
+    (declare (type fixnum r-trunc))
+    (cond
+      ((= r r-trunc) r-trunc)
+      ((typep r 'single-float) r)
+      (t (coerce r 'single-float)))))
+
+;; (opt-r 1.0E+03)
+;; (opt-r 1)
+;; (opt-r 2.2)
+;; (opt-r 10000/11)
+
+
 ;;; #
 
-(defun par-r (r1 r2)
-  (declare (type real r1 r2)
-           (values real &optional))
+(defun par-r-2 (r1 r2)
+  (declare (type rating r1 r2)
+           (values rating &optional))
   "Calculate equivalent resistance of two resistors in parallel"
-  (/ (* r1 r2) (+ r1 r2)))
+  (opt-r (/ (* r1 r2) (+ r1 r2))))
+
+
+(defun par-r-n (&rest rn)
+  (declare (values rating &optional))
+  (opt-r
+   (/ 1 (apply #'+
+               (mapcar  #'(lambda (r)
+                            (declare (type rating r))
+                            (/ 1 r))
+                        rn)))))
+
+;; (par-r-n 10 10)
+;; => 5
+
+;; (par-r-n 10 10 10 10 10)
+;; => 2
 
 
 ;;; #
@@ -44,64 +82,55 @@ The Eclipse Public License 1.0 is available at the URL:
   "Calculate current for each circuit branch in an element of two
 parallel resistances r1, r2 creating a current divider in a circuit
 of current il"
-  (declare (type real it r1 r2)
-           (values real real &optional))
-  (let* ((r_eq (par-r r1 r2))
+  (declare (type rating it r1 r2)
+           (values rating rating &optional))
+  (let* ((r_eq (par-r-2 r1 r2))
          (ir (* it r_eq)))
-    (declare (type real r_eq ir))
-    (values (/ ir r1)
-            (/ ir r2))))
+    (declare (type rating r_eq ir))
+    (values (opt-r (/ ir r1))
+            (opt-r (/ ir r2)))))
 
 (defun v-ab (vt r1 r2)
   "Calculate voltage differential across each resistor of a series of
 two resistances r1, r2 creating a voltage divider in a circuit
 of current vt"
-  (declare (type real vt r1 r2)
-           (values real real &optional))
+  (declare (type rating vt r1 r2)
+           (values rating rating &optional))
   (let* ((r_eq (+ r1 r2))
          (vr (/ vt r_eq)))
-    (declare (type real r_eq vr))
-    (values (* r1 vr) (* r2 vr))))
+    (declare (type rating r_eq vr))
+    (values
+     (opt-r (* r1 vr))
+     (opt-r (* r2 vr)))))
 
 
 ;;; #
 
-
-(deftype rating ()
-  '(or single-float fixnum))
 
 (defstruct (r
             (:constructor %make-r
                 (rating tolerance rating-min rating-max)))
   (rating 0 :type rating)
   ;; ^ FIXME : the only single-float rating in the use case is 2.2
-  (tolerance 0 :type real) ;; FIXME: use single-float instead
+  (tolerance 0 :type single-float) ;; FIXME: use single-float instead
   (rating-min 0 :type real)
   (rating-max 0 :type real))
 
-(defun opt-r (r)
-  (declare (type rating r)
-           (values rating &optional))
-  (let ((r-trunc (truncate r)))
-    (declare (type fixnum r-trunc))
-    (cond
-      ((= r r-trunc) r-trunc)
-      (t r))))
-
-;; (opt-r 1.0E+03)
-;; (opt-r 1)
-;; (opt-r 2.2)
-
 
 (defun make-r (rating tolerance)
-  ;; tolerance: as ratio (not percent)
-  (declare (type real rating tolerance)
+  "Make an R object - a resistor of rating RATING with a specified
+manfucatured rating tolerance TOLERANCE
+
+TOLERANCE should be provided as a SINGLE-FLOAT value"
+  (declare (type real rating rating)
+           (type single-float tolerance)
            (values r &optional))
   (let* ((r-val (opt-r rating))
          (diff (* r-val tolerance))
          (min (opt-r (- r-val diff)))
          (max (opt-r (+ r-val diff))))
-    (declare (type rating r-val diff min max ))
+    (declare (type rating r-val min max)
+             (type single-float diff))
     (%make-r r-val tolerance min max)))
 
 (defmethod print-object ((object r) stream)
@@ -124,7 +153,7 @@ of current vt"
 ;; (make-rset 0.05 1E+03 10E+03 100E+03)
 
 
-(defun search-par-r (rt rset)
+(defun search-par-r-2 (rt rset)
   (declare (type real rt)
            (type simple-vector rset)
            (values simple-vector &optional))
@@ -141,10 +170,10 @@ of current vt"
         (declare (type rating r1-r))
         (block r2
           (dotimes (n2 len)
-            (locally (declare (inline par-r))
+            (locally (declare (inline par-r-2))
               (let* ((r2-ob (svref rset n2))
                      (r2-r (r-rating r2-ob))
-                     (r-eq (par-r r1-r r2-r)))
+                     (r-eq (par-r-2 r1-r r2-r)))
               (declare (type rating r2-r)
                        (type real r-eq))
                 (when (= r-eq rt)
@@ -177,7 +206,7 @@ of current vt"
 (map 'list #'(lambda (bucket)
                (cons (r-rating (svref bucket 0))
                      (r-rating (svref bucket 1))))
-     (search-par-r 20 *rset*))
+     (search-par-r-2 20 *rset*))
 ;;  => #((220 . 22) (22 . 220))
 ;; ^ one of the few examples for which this trivial two-resistor
 ;; search would appear to be of any use
@@ -185,7 +214,7 @@ of current vt"
 ;; Note that it returns to "equivalent sets" however
 
 (map 'list #'identity
-     (search-par-r 0.005952 *rset*))
+     (search-par-r-2 0.005952 *rset*))
 ;; => NIL
 
 

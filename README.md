@@ -76,6 +76,7 @@ for a useful exercise in program design and circuit modeling.
 #### gUtils - Version History
 
 * 1.0.1 : created `RpR.vi` and containing `EELaw.lvproj` project
+
 * 1.0.2 : added `Div-Cur.vi` and `Div-Volt.vi` both in reusing `RpR.vi`
 
 
@@ -86,9 +87,13 @@ Latest version: 1.0.1
 
 #### CLEDA - Version History
 
-* 1.0.1 added par-r, i-ab, v-ab, rating type, r struct, opt-r, make-r,
-  make-rset, search-par-r
+* 1.0.1 added PAR-R, I-AB, V-AB, RATING TYPE, R STRUCT, OPT-R, MAKE-R,
+  MAKE-RSET, SEARCH-PAR-R
 
+* 1.0.2 rename PAR-R-2 -> PAR-R, SEARCH-PAR-R -> SEARCH-PAR-R-2; add
+  PAR-N; add docstrings; revise OPT-R to return SINGLE-FLOAT for
+  RATIO input; upate functions to return values of type RATING insead
+  of REAL
 
 
 [labview]: http://www.ni.com/labview/
