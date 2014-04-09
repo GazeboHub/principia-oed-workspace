@@ -83,7 +83,7 @@ for a useful exercise in program design and circuit modeling.
 ### CLEDA - Common Lisp EDA Tools
 
 Pathname: `src/main/lisp/cleda/`
-Latest version: 1.0.1
+Latest version: 1.0.3
 
 #### CLEDA - Version History
 
@@ -95,5 +95,7 @@ Latest version: 1.0.1
   RATIO input; upate functions to return values of type RATING insead
   of REAL
 
+* 1.0.3 add defsystem, defpackage; move forms from cleda.lisp into
+  individual files
 
 [labview]: http://www.ni.com/labview/
