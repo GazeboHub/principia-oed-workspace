@@ -205,6 +205,33 @@ TOLERANCE should be provided as a SINGLE-FLOAT value"
     270E+03 330E+03 1.5E+06 2.2E+06
     3.3E+06 4.7E+06))
 
+;; (length *rset*)
+;; => 65 ;; n = 65
+;; for a = 5, calculate n^1 + n^2 + ... n^a
+;;
+
+ (defun expsum (n a)
+   (declare (type fixnum n a)
+            (values fixnum &optional))
+   (let ((i 0))
+     (declare (type fixnum i))
+     (dotimes (an a i)
+       (setq i (+ i (expt n an))))))
+
+;;; (expsum 65 5) => 18129541
+
+;; (/ 18129541 60.0)
+;; with 18129541 a measure of miliseconds
+;; = 0.20983265046 day
+;; shortly more than 5 hours
+;; ^ the maximum time to calcluate the set of resistors Re for an
+;; equivalent resistance Rt given Sr of length n, maximum  number of
+;; resistors in circuit 'a' ... assuming that any useful subset of Sr
+;; can be arbitrary computed for an equivalent Rt
+
+
+;;
+
  (map 'list #'(lambda (bucket)
                 (cons (r-rating (svref bucket 0))
                       (r-rating (svref bucket 1))))
@@ -222,3 +249,13 @@ TOLERANCE should be provided as a SINGLE-FLOAT value"
 
 
 |#
+
+
+(defun search-par-r-n (rt rset max-n)
+  (declare (type real rt)
+           (type simple-vector rset)
+           (type fixnum max-n)
+           (values simple-vector &optional))
+  ;; TO DO
+  (error "Not implemented")
+  )
