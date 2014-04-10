@@ -1,12 +1,6 @@
 
 (in-package #:cl-user)
 
-(eval-when (:compile-toplevel
-            :load-toplevel
-            :execute)
-  (defpackage #:cleda-user
-    (:use #:cleda #:cl)))
-
 
 (in-package #:cleda-user)
 

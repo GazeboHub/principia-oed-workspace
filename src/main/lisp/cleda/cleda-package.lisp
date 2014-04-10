@@ -47,3 +47,6 @@ The Eclipse Public License 1.0 is available at the URL:
    #:search-par-r-2
    #:search-par-r-n
    ))
+
+(defpackage #:cleda-user
+  (:use #:cleda #:cl))
