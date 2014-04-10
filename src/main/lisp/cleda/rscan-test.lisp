@@ -8,7 +8,7 @@
     (:use #:cleda #:cl)))
 
 
-(in-package #:cleda)
+(in-package #:cleda-user)
 
 (defparameter *rset*
   ;; referring to RadioShack catalog item 2710003
@@ -90,4 +90,10 @@
 ;; Usage test 2. ... specific single-float value
 
 (rset-search 0.005952)
+;; => NIL
+
+(rset-search 20E-03)
+;; => NIL
+
+(rset-search 0.67)
 ;; => NIL
