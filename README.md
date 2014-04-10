@@ -83,7 +83,6 @@ for a useful exercise in program design and circuit modeling.
 ### CLEDA - Common Lisp EDA Tools
 
 Pathname: `src/main/lisp/cleda/`
-Latest version: 1.0.3
 
 #### CLEDA - Version History
 
@@ -97,5 +96,8 @@ Latest version: 1.0.3
 
 * 1.0.3 add defsystem, defpackage; move forms from cleda.lisp into
   individual files
+
+* 1.0.4 define par-r-n-2, par-r scanner benchmarking code, package
+  cleda-package
 
 [labview]: http://www.ni.com/labview/
