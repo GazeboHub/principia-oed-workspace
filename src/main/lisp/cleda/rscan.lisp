@@ -36,7 +36,7 @@ The Eclipse Public License 1.0 is available at the URL:
 manufactured rating tolerance TOLERANCE
 
 TOLERANCE should be provided as a SINGLE-FLOAT value"
-  (declare (type real rating rating)
+  (declare (type rating rating)
            (type single-float tolerance)
            (values r &optional))
   (let* ((r-val (opt-r rating))
