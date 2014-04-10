@@ -76,6 +76,29 @@ return the truncation of R, else return R"
 ;; => 2
 
 
+(defun par-r-n-2 (r1 &rest rm)
+  (declare (type rating r1)
+           (values rating &optional))
+  (cond
+    (rm
+     (let ((r-eq (par-r-2 r1 (car rm)))
+           (rm-rest (cdr rm)))
+       (cond
+         (rm-rest
+          (apply #'par-r-n-2 r-eq rm-rest))
+         (t r-eq))))
+    (t r1)))
+
+;; (par-r-n-2 10 10)
+;; => 5
+
+;; (par-r-n-2 10 10 10 10 10)
+;; => 2
+
+
+
+
+
 ;;; #
 
 (defun i-ab  (it r1 r2)
